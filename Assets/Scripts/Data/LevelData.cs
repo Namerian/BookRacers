@@ -18,10 +18,10 @@ public class LevelData
 
     public void Load()
     {
-        if (File.Exists(Application.persistentDataPath + "/Level_" + _name + ".dat"))
+        if (File.Exists(GameController.DATAPATH + "/Level_" + _name + ".dat"))
         {
             BinaryFormatter bf = new BinaryFormatter();
-            FileStream fs = File.Open(Application.persistentDataPath + "/Level_" + _name + ".dat", FileMode.Open);
+            FileStream fs = File.Open(GameController.DATAPATH + "/Level_" + _name + ".dat", FileMode.Open);
 
             LevelData data = (LevelData)bf.Deserialize(fs);
             fs.Close();
@@ -33,7 +33,7 @@ public class LevelData
     public void Save()
     {
         BinaryFormatter bf = new BinaryFormatter();
-        FileStream fs = File.Create(Application.persistentDataPath + "/Level_" + _name + ".dat");
+        FileStream fs = File.Create(GameController.DATAPATH + "/Level_" + _name + ".dat");
 
         bf.Serialize(fs, this);
         fs.Close();

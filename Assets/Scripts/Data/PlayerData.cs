@@ -54,10 +54,10 @@ public class PlayerData
 
     public void Load()
     {
-        if (File.Exists(Application.persistentDataPath + "/PlayerData.dat"))
+        if (File.Exists(GameController.DATAPATH + "/PlayerData.dat"))
         {
             BinaryFormatter bf = new BinaryFormatter();
-            FileStream fs = File.Open(Application.persistentDataPath + "/PlayerData.dat", FileMode.Open);
+            FileStream fs = File.Open(GameController.DATAPATH + "/PlayerData.dat", FileMode.Open);
 
             PlayerData data = (PlayerData)bf.Deserialize(fs);
             fs.Close();
@@ -72,7 +72,7 @@ public class PlayerData
     public void Save()
     {
         BinaryFormatter bf = new BinaryFormatter();
-        FileStream fs = File.Create(Application.persistentDataPath + "/PlayerData.dat");
+        FileStream fs = File.Create(GameController.DATAPATH + "/PlayerData.dat");
 
         bf.Serialize(fs, this);
         fs.Close();

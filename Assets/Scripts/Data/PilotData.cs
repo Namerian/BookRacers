@@ -20,10 +20,10 @@ public class PilotData
 
     public void Load()
     {
-        if (File.Exists(Application.persistentDataPath + "/Pilot_" + _name + ".dat"))
+        if (File.Exists(GameController.DATAPATH + "/Pilot_" + _name + ".dat"))
         {
             BinaryFormatter bf = new BinaryFormatter();
-            FileStream fs = File.Open(Application.persistentDataPath + "/Pilot_" + _name + ".dat", FileMode.Open);
+            FileStream fs = File.Open(GameController.DATAPATH + "/Pilot_" + _name + ".dat", FileMode.Open);
 
             PilotData data = (PilotData)bf.Deserialize(fs);
             fs.Close();
@@ -36,7 +36,7 @@ public class PilotData
     public void Save()
     {
         BinaryFormatter bf = new BinaryFormatter();
-        FileStream fs = File.Create(Application.persistentDataPath + "/Pilot_" + _name + ".dat");
+        FileStream fs = File.Create(GameController.DATAPATH + "/Pilot_" + _name + ".dat");
 
         bf.Serialize(fs, this);
         fs.Close();

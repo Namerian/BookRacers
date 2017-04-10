@@ -20,10 +20,10 @@ public class BookData
 
     public void Load()
     {
-        if (File.Exists(Application.persistentDataPath + "/Book_" + _name + ".dat"))
+        if (File.Exists(GameController.DATAPATH + "/Book_" + _name + ".dat"))
         {
             BinaryFormatter bf = new BinaryFormatter();
-            FileStream fs = File.Open(Application.persistentDataPath + "/Book_" + _name + ".dat", FileMode.Open);
+            FileStream fs = File.Open(GameController.DATAPATH + "/Book_" + _name + ".dat", FileMode.Open);
 
             BookData data = (BookData)bf.Deserialize(fs);
             fs.Close();
@@ -36,7 +36,7 @@ public class BookData
     public void Save()
     {
         BinaryFormatter bf = new BinaryFormatter();
-        FileStream fs = File.Create(Application.persistentDataPath + "/Book_" + _name + ".dat");
+        FileStream fs = File.Create(GameController.DATAPATH + "/Book_" + _name + ".dat");
 
         bf.Serialize(fs, this);
         fs.Close();

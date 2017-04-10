@@ -1,10 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
     public static GameController Instance { get; private set; }
+
+    public static string DATAPATH { get { return Application.persistentDataPath + "/BookRacers"; } }
+
+    //===============================================================================
+    //
+    //===============================================================================
 
     [SerializeField]
     private PlayerData _playerData;
@@ -30,6 +37,8 @@ public class GameController : MonoBehaviour
 
     public List<LevelData> LevelData { get { return _levelDataList; } }
 
+    
+
     //===============================================================================
     // MONOBEHAVIOUR METHODS
     //===============================================================================
@@ -50,6 +59,11 @@ public class GameController : MonoBehaviour
     private void Start()
     {
         DontDestroyOnLoad(gameObject);
+
+        if (!Directory.Exists(DATAPATH))
+        {
+            Directory.CreateDirectory(DATAPATH);
+        }
 
         Load();
     }
