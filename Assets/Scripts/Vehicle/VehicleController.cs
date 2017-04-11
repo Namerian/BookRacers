@@ -14,13 +14,13 @@ public class VehicleController : MonoBehaviour
     private Transform[] _bookCorners;
 
 
-    private Vector2 _movRectHalfSize;
+
 
     public float _acceleration = 200;
     public float _angularAcceleration = 10;
 
-    public float _maxVelocity = 50;
-    public float _maxAngularVelocity = 5;
+    //public float _maxVelocity = 50;
+    //public float _maxAngularVelocity = 5;
 
     public float _hoverForce = 500;
     public float _hoverHeight = 2;
@@ -28,22 +28,32 @@ public class VehicleController : MonoBehaviour
     public float _leaningAngle = 6;
     public float _leaningDelay = 0.2f;
 
+    [Header("Debugging")]
+
     [SerializeField]
     private float _currentVelocity;
 
     [SerializeField]
     private float _currentAngularVelocity;
 
-    public Vector2 mouseInput;
+    [SerializeField]
+    private Vector2 mouseInput;
 
+    //=====================================================================================================
+    //
+    //=====================================================================================================
+
+    private Vector2 _movRectHalfSize;
     private float leaningVelocity;
+
+    //=====================================================================================================
+    //
+    //=====================================================================================================
 
     // Use this for initialization
     void Start()
     {
         _movRectHalfSize = _movementRectangle.rect.size * 0.5f;
-
-        _vehicleRigidbody.maxAngularVelocity = _maxAngularVelocity;
     }
 
     // Update is called once per frame
@@ -176,7 +186,5 @@ public class VehicleController : MonoBehaviour
 
         _currentVelocity = _vehicleRigidbody.velocity.magnitude;
         _currentAngularVelocity = _vehicleRigidbody.angularVelocity.magnitude;
-
-
     }
 }
