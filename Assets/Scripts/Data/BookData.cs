@@ -8,15 +8,80 @@ using UnityEngine;
 [Serializable]
 public class BookData
 {
+    [Header("Constant Data")]
+
     [SerializeField]
     private string _name;
 
     [SerializeField]
+    private float _baseAcceleration;
+
+    [SerializeField]
+    private float _baseTurnSpeed;
+
+    [SerializeField]
+    private float _baseMass;
+
+    [Header("Persistent Data")]
+
+    [SerializeField]
     private int _experience;
 
-    public string Name { get { return _name; } private set { _name = value; } }
+    [SerializeField]
+    private BookUpgrade _upgrade;
+
+    //=======================================================================================
+    //
+    //=======================================================================================
+
+    public string Name { get { return _name; } }
+
+    public float Acceleration
+    {
+        get
+        {
+            float value = _baseAcceleration;
+
+            if (_upgrade.Stat == EVehicleStat.acceleration)
+                value += _upgrade.CurrentLevel * _upgrade.ValuePerLevel;
+
+            return value;
+        }
+    }
+
+    public float TurnSpeed
+    {
+        get
+        {
+            float value = _baseTurnSpeed;
+
+            if (_upgrade.Stat == EVehicleStat.turnSpeed)
+                value += _upgrade.CurrentLevel * _upgrade.ValuePerLevel;
+
+            return value;
+        }
+    }
+
+    public float Mass
+    {
+        get
+        {
+            float value = _baseMass;
+
+            if (_upgrade.Stat == EVehicleStat.mass)
+                value += _upgrade.CurrentLevel * _upgrade.ValuePerLevel;
+
+            return value;
+        }
+    }
 
     public int Experience { get { return _experience; } private set { _experience = value; } }
+
+    public BookUpgrade Upgrade { get { return _upgrade; } private set { _upgrade = value; } }
+
+    //=======================================================================================
+    //
+    //=======================================================================================
 
     public void Load()
     {
@@ -28,8 +93,8 @@ public class BookData
             BookData data = (BookData)bf.Deserialize(fs);
             fs.Close();
 
-            Name = data.Name;
             Experience = data.Experience;
+            Upgrade = data.Upgrade;
         }
     }
 

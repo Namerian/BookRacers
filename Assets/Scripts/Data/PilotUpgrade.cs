@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MenuController : MonoBehaviour {
+public class PilotUpgrade : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {

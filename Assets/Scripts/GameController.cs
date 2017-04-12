@@ -65,7 +65,7 @@ public class GameController : MonoBehaviour
             Directory.CreateDirectory(DATAPATH);
         }
 
-        Load();
+        LoadData();
     }
 
     // Update is called once per frame
@@ -78,15 +78,15 @@ public class GameController : MonoBehaviour
     {
         if (Instance == this)
         {
-            Save();
+            SaveData();
         }
     }
 
     //===============================================================================
-    // PRIVATE METHODS
+    // METHODS
     //===============================================================================
 
-    private void Load()
+    private void LoadData()
     {
         _playerData.Load();
 
@@ -106,7 +106,7 @@ public class GameController : MonoBehaviour
         }
     }
 
-    private void Save()
+    public void SaveData()
     {
         _playerData.Save();
 
