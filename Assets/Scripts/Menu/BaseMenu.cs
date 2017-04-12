@@ -7,19 +7,23 @@ public abstract class BaseMenu : MonoBehaviour
     [SerializeField]
     private CanvasGroup _canvasGroup;
 
-    public void EnterMenu()
+    public void EnterMenu(bool editor)
     {
+        //Debug.Log("EnterMenu called");
+
         ShowMenu();
 
-        if (Application.isPlaying)
+        if (!editor)
             OnEnter();
     }
 
-    public void ExitMenu()
+    public void ExitMenu(bool editor)
     {
+        //Debug.Log("ExitMenu called");
+
         HideMenu();
 
-        if (Application.isPlaying)
+        if (!editor)
             OnExit();
     }
 

@@ -49,7 +49,7 @@ public class MenuController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-
+        SwitchMenu(EMenuScreen.MainMenu);
     }
 
     // Update is called once per frame
@@ -60,18 +60,21 @@ public class MenuController : MonoBehaviour
 
     private void OnValidate()
     {
-        SwitchMenu(_visibleMenu);
+        if (!Application.isPlaying)
+            SwitchMenu(_visibleMenu, true);
     }
 
     //===============================================================================
     //
     //===============================================================================
 
-    public void SwitchMenu(EMenuScreen newMenu)
+    public void SwitchMenu(EMenuScreen newMenu, bool editor = false)
     {
+        //Debug.Log("SwitchMenu called: newMenu=" + newMenu + "; editor=" + editor);
+
         BaseMenu newCurrentMenu = null;
 
-        switch (_visibleMenu)
+        switch (newMenu)
         {
             case EMenuScreen.MainMenu:
                 newCurrentMenu = _mainMenu;
@@ -86,20 +89,21 @@ public class MenuController : MonoBehaviour
 
         if (newCurrentMenu != null)
         {
-            if (newCurrentMenu != _currentMenu)
-            {
-                if (_currentMenu != null)
-                    _currentMenu.ExitMenu();
+            //Debug.Log("SwitchMenu: newMenu != null");
 
-                _currentMenu = newCurrentMenu;
+            /*if (newCurrentMenu == _currentMenu)
+                Debug.Log("newCurrentMenu == _currentMenu");*/
 
-                _currentMenu.EnterMenu();
-            }
-            
+            if (_currentMenu != null)
+                _currentMenu.ExitMenu(editor);
+
+            _currentMenu = newCurrentMenu;
+
+            _currentMenu.EnterMenu(editor);
         }
-        else if(_currentMenu != null)
+        else if (_currentMenu != null)
         {
-            _currentMenu.ExitMenu();
+            _currentMenu.ExitMenu(editor);
             _currentMenu = null;
         }
     }

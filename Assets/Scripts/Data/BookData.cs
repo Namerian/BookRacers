@@ -75,7 +75,7 @@ public class BookData
         }
     }
 
-    public int Experience { get { return _experience; } private set { _experience = value; } }
+    public int Experience { get { return _experience; } set { _experience = value; } }
 
     public BookUpgrade Upgrade { get { return _upgrade; } private set { _upgrade = value; } }
 

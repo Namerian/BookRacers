@@ -44,7 +44,10 @@ public class BookMenuController : BaseMenu
     private Button _upgradeButton;
 
     [SerializeField]
-    private Text _upgradePriceText;
+    private Text _upgradeXpPriceText;
+
+    [SerializeField]
+    private Text _upgradeMoneyPriceText;
 
     [SerializeField]
     private Text _upgradeImprovementText;
@@ -98,26 +101,9 @@ public class BookMenuController : BaseMenu
         _xpText.text = "XP: " + bookData.Experience;
         _moneyText.text = "Money: " + playerData.Money;
 
-        float acceleration = bookData.Acceleration;
-        float turnSpeed = bookData.TurnSpeed;
-        float mass = bookData.Mass;
-
-        switch (bookData.Upgrade.Stat)
-        {
-            case EVehicleStat.acceleration:
-                acceleration += bookData.Upgrade.CurrentLevel * bookData.Upgrade.ValuePerLevel;
-                break;
-            case EVehicleStat.mass:
-                mass+= bookData.Upgrade.CurrentLevel * bookData.Upgrade.ValuePerLevel;
-                break;
-            case EVehicleStat.turnSpeed:
-                turnSpeed += bookData.Upgrade.CurrentLevel * bookData.Upgrade.ValuePerLevel;
-                break;
-        }
-
-        _accelerationText.text = "Acceleration: " + acceleration;
-        _turnSpeedText.text = "Turn Speed: " + turnSpeed;
-        _massText.text = "Mass: " + mass;
+        _accelerationText.text = "Acceleration: " + bookData.Acceleration;
+        _turnSpeedText.text = "Turn Speed: " + bookData.TurnSpeed;
+        _massText.text = "Mass: " + bookData.Mass;
     }
 
     private void LoadUpgradePanel(PlayerData playerData, BookData bookData)
@@ -134,14 +120,40 @@ public class BookMenuController : BaseMenu
                 _upgradeBonusText.text = "Acceleration: +" + bookData.Upgrade.CurrentLevel * bookData.Upgrade.ValuePerLevel;
                 break;
             case EVehicleStat.mass:
-                _upgradeBonusText.text = "Mass: +" + bookData.Upgrade.CurrentLevel * bookData.Upgrade.ValuePerLevel; break;
+                _upgradeBonusText.text = "Mass: +" + bookData.Upgrade.CurrentLevel * bookData.Upgrade.ValuePerLevel;
+                break;
             case EVehicleStat.turnSpeed:
-                _upgradeBonusText.text = "Turn Speed: +" + bookData.Upgrade.CurrentLevel * bookData.Upgrade.ValuePerLevel; break;
+                _upgradeBonusText.text = "Turn Speed: +" + bookData.Upgrade.CurrentLevel * bookData.Upgrade.ValuePerLevel;
+                break;
         }
 
-        if(bookData.Upgrade.CurrentLevel < bookData.Upgrade.NumLevels)
+        if (bookData.Upgrade.CurrentLevel < bookData.Upgrade.NumLevels)
         {
             _upgradeButton.enabled = true;
+
+            int xpPrice = (bookData.Upgrade.CurrentLevel + 1) * bookData.Upgrade.LevelExpCost;
+            int moneyPrice = (bookData.Upgrade.CurrentLevel + 1) * bookData.Upgrade.LevelMoneyCost;
+
+            _upgradeXpPriceText.text = xpPrice + " XP";
+            _upgradeMoneyPriceText.text = moneyPrice + " Money";
+
+            switch (bookData.Upgrade.Stat)
+            {
+                case EVehicleStat.acceleration:
+                    _upgradeImprovementText.text = "Acceleration: +" + bookData.Upgrade.ValuePerLevel;
+                    break;
+                case EVehicleStat.mass:
+                    _upgradeImprovementText.text = "Mass: +" + bookData.Upgrade.ValuePerLevel;
+                    break;
+                case EVehicleStat.turnSpeed:
+                    _upgradeImprovementText.text = "Turn Speed: +" + bookData.Upgrade.ValuePerLevel;
+                    break;
+            }
+
+            if (bookData.Experience >= xpPrice && playerData.Money >= moneyPrice)
+                _upgradeButton.interactable = true;
+            else
+                _upgradeButton.interactable = false;
         }
         else
         {
@@ -160,6 +172,20 @@ public class BookMenuController : BaseMenu
 
     public void OnUpgradeButtonPressed()
     {
+        PlayerData playerData = GameController.Instance.PlayerData;
+        BookData bookData = GameController.Instance.BookData[playerData.CurrentBookIndex];
 
+        int xpPrice = (bookData.Upgrade.CurrentLevel + 1) * bookData.Upgrade.LevelExpCost;
+        int moneyPrice = (bookData.Upgrade.CurrentLevel + 1) * bookData.Upgrade.LevelMoneyCost;
+
+        if (bookData.Experience >= xpPrice && playerData.Money >= moneyPrice)
+        {
+            bookData.Experience -= xpPrice;
+            playerData.Money -= moneyPrice;
+
+            bookData.Upgrade.CurrentLevel++;
+
+            OnEnter();
+        }
     }
 }
