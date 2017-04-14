@@ -16,19 +16,14 @@ public class MenuController : MonoBehaviour
     [Header("")]
 
     [SerializeField]
-    private BaseMenu _mainMenu;
-
-    [SerializeField]
-    private BaseMenu _pilotMenu;
-
-    [SerializeField]
-    private BaseMenu _bookMenu;
+    private List<BaseMenu> _menuList;
 
     //===============================================================================
     //
     //===============================================================================
 
     private BaseMenu _currentMenu;
+    private Dictionary<EMenuScreen, BaseMenu> _menuDictionary = new Dictionary<EMenuScreen, BaseMenu>();
 
     //===============================================================================
     //
@@ -49,6 +44,12 @@ public class MenuController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        _menuDictionary.Clear();
+        foreach (BaseMenu menu in _menuList)
+        {
+            _menuDictionary.Add(menu.MenuType, menu);
+        }
+
         SwitchMenu(EMenuScreen.MainMenu);
     }
 
@@ -61,50 +62,39 @@ public class MenuController : MonoBehaviour
     private void OnValidate()
     {
         if (!Application.isPlaying)
-            SwitchMenu(_visibleMenu, true);
+        {
+            _menuDictionary.Clear();
+            foreach (BaseMenu menu in _menuList)
+            {
+                _menuDictionary.Add(menu.MenuType, menu);
+            }
+
+            if (_currentMenu != null)
+                _currentMenu.HideMenu();
+
+            _currentMenu = _menuDictionary[_visibleMenu];
+
+            if (_currentMenu != null)
+                _currentMenu.ShowMenu();
+        }
     }
 
     //===============================================================================
     //
     //===============================================================================
 
-    public void SwitchMenu(EMenuScreen newMenu, bool editor = false)
+    public void SwitchMenu(EMenuScreen newMenuType)
     {
-        //Debug.Log("SwitchMenu called: newMenu=" + newMenu + "; editor=" + editor);
+        BaseMenu newMenu = _menuDictionary[newMenuType];
 
-        BaseMenu newCurrentMenu = null;
-
-        switch (newMenu)
+        if (newMenu != null)
         {
-            case EMenuScreen.MainMenu:
-                newCurrentMenu = _mainMenu;
-                break;
-            case EMenuScreen.PilotMenu:
-                newCurrentMenu = _pilotMenu;
-                break;
-            case EMenuScreen.BookMenu:
-                newCurrentMenu = _bookMenu;
-                break;
-        }
-
-        if (newCurrentMenu != null)
-        {
-            //Debug.Log("SwitchMenu: newMenu != null");
-
-            /*if (newCurrentMenu == _currentMenu)
-                Debug.Log("newCurrentMenu == _currentMenu");*/
-
             if (_currentMenu != null)
-                _currentMenu.ExitMenu(editor);
+                _currentMenu.ExitMenu();
 
-            _currentMenu = newCurrentMenu;
+            _currentMenu = newMenu;
 
-            _currentMenu.EnterMenu(editor);
-        }
-        else if (_currentMenu != null)
-        {
-            _currentMenu.ExitMenu(editor);
-            _currentMenu = null;
+            _currentMenu.EnterMenu();
         }
     }
 }

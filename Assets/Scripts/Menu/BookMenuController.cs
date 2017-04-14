@@ -56,6 +56,12 @@ public class BookMenuController : BaseMenu
     //
     //==================================================================
 
+    public override EMenuScreen MenuType { get { return EMenuScreen.BookMenu; } }
+
+    //==================================================================
+    //
+    //==================================================================
+
     // Use this for initialization
     void Start()
     {

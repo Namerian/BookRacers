@@ -7,34 +7,28 @@ public abstract class BaseMenu : MonoBehaviour
     [SerializeField]
     private CanvasGroup _canvasGroup;
 
-    public void EnterMenu(bool editor)
+    public void EnterMenu()
     {
-        //Debug.Log("EnterMenu called");
-
         ShowMenu();
 
-        if (!editor)
-            OnEnter();
+        OnEnter();
     }
 
-    public void ExitMenu(bool editor)
+    public void ExitMenu()
     {
-        //Debug.Log("ExitMenu called");
-
         HideMenu();
 
-        if (!editor)
-            OnExit();
+        OnExit();
     }
 
-    private void ShowMenu()
+    public void ShowMenu()
     {
         _canvasGroup.alpha = 1;
         _canvasGroup.interactable = true;
         _canvasGroup.blocksRaycasts = true;
     }
 
-    private void HideMenu()
+    public void HideMenu()
     {
         _canvasGroup.alpha = 0;
         _canvasGroup.interactable = false;
@@ -43,4 +37,6 @@ public abstract class BaseMenu : MonoBehaviour
 
     protected abstract void OnEnter();
     protected abstract void OnExit();
+
+    public abstract EMenuScreen MenuType { get; }
 }

@@ -1,16 +1,45 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PilotUpgrade : MonoBehaviour {
+[Serializable]
+public class PilotUpgrade
+{
+    [SerializeField]
+    private EVehicleStat _stat;
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    [SerializeField]
+    private float _valuePerLevel;
+
+    [SerializeField]
+    private int _numLevels;
+
+    [SerializeField]
+    private int _levelExpCost;
+
+    [SerializeField]
+    private int _currentLevel;
+
+    public EVehicleStat Stat { get { return _stat; } }
+
+    public float ValuePerLevel { get { return _valuePerLevel; } }
+
+    public int NumLevels { get { return _numLevels; } }
+
+    public int LevelExpCost { get { return _levelExpCost; } }
+
+    public int CurrentLevel
+    {
+        get { return _currentLevel; }
+        set
+        {
+            if (value < 0)
+                _currentLevel = 0;
+            else if (value > _numLevels)
+                _currentLevel = _numLevels;
+            else
+                _currentLevel = value;
+        }
+    }
 }

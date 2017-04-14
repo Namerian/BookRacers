@@ -47,10 +47,15 @@ public class MainMenuController : BaseMenu
     //
     //==================================================================
 
+    public override EMenuScreen MenuType { get { return EMenuScreen.MainMenu; } }
+
+    //==================================================================
+    //
+    //==================================================================
+
     // Use this for initialization
     private void Start()
     {
-        
     }
 
     // Update is called once per frame
