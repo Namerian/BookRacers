@@ -47,6 +47,7 @@ public class MenuController : MonoBehaviour
         _menuDictionary.Clear();
         foreach (BaseMenu menu in _menuList)
         {
+            menu.HideMenu();
             _menuDictionary.Add(menu.MenuType, menu);
         }
 
@@ -63,19 +64,13 @@ public class MenuController : MonoBehaviour
     {
         if (!Application.isPlaying)
         {
-            _menuDictionary.Clear();
-            foreach (BaseMenu menu in _menuList)
+            foreach(BaseMenu menu in _menuList)
             {
-                _menuDictionary.Add(menu.MenuType, menu);
+                if (menu.MenuType == _visibleMenu)
+                    menu.ShowMenu();
+                else
+                    menu.HideMenu();
             }
-
-            if (_currentMenu != null)
-                _currentMenu.HideMenu();
-
-            _currentMenu = _menuDictionary[_visibleMenu];
-
-            if (_currentMenu != null)
-                _currentMenu.ShowMenu();
         }
     }
 

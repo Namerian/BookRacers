@@ -52,6 +52,17 @@ public class BookMenuController : BaseMenu
     [SerializeField]
     private Text _upgradeImprovementText;
 
+    [Header("Buy Panel")]
+
+    [SerializeField]
+    private CanvasGroup _buyCanvasGroup;
+
+    [SerializeField]
+    private Button _buyButton;
+
+    [SerializeField]
+    private Text _buyCostText;
+
     //==================================================================
     //
     //==================================================================
@@ -87,7 +98,10 @@ public class BookMenuController : BaseMenu
 
         LoadStatBar(playerData, bookData);
 
-        LoadUpgradePanel(playerData, bookData);
+        if (bookData.Unlocked)
+            LoadUpgradePanel(playerData, bookData);
+        else
+            LoadBuyPanel(playerData, bookData);
     }
 
     protected override void OnExit()
@@ -95,6 +109,10 @@ public class BookMenuController : BaseMenu
         _upgradeCanvasGroup.alpha = 0;
         _upgradeCanvasGroup.interactable = false;
         _upgradeCanvasGroup.blocksRaycasts = false;
+
+        _buyCanvasGroup.alpha = 0;
+        _buyCanvasGroup.interactable = false;
+        _buyCanvasGroup.blocksRaycasts = false;
     }
 
     //==================================================================
@@ -114,6 +132,10 @@ public class BookMenuController : BaseMenu
 
     private void LoadUpgradePanel(PlayerData playerData, BookData bookData)
     {
+        _buyCanvasGroup.alpha = 0;
+        _buyCanvasGroup.interactable = false;
+        _buyCanvasGroup.blocksRaycasts = false;
+
         _upgradeCanvasGroup.alpha = 1;
         _upgradeCanvasGroup.interactable = true;
         _upgradeCanvasGroup.blocksRaycasts = true;
@@ -167,6 +189,24 @@ public class BookMenuController : BaseMenu
         }
     }
 
+    private void LoadBuyPanel(PlayerData player, BookData book)
+    {
+        _upgradeCanvasGroup.alpha = 0;
+        _upgradeCanvasGroup.interactable = false;
+        _upgradeCanvasGroup.blocksRaycasts = false;
+
+        _buyCanvasGroup.alpha = 1;
+        _buyCanvasGroup.interactable = true;
+        _buyCanvasGroup.blocksRaycasts = true;
+
+        _buyCostText.text = "Cost: " + book.Cost;
+
+        if (player.Money >= book.Cost)
+            _buyButton.interactable = true;
+        else
+            _buyButton.interactable = false;
+    }
+
     //==================================================================
     //
     //==================================================================
@@ -190,6 +230,20 @@ public class BookMenuController : BaseMenu
             playerData.Money -= moneyPrice;
 
             bookData.Upgrade.CurrentLevel++;
+
+            OnEnter();
+        }
+    }
+
+    public void OnBuyButtonPressed()
+    {
+        PlayerData playerData = GameController.Instance.PlayerData;
+        BookData bookData = GameController.Instance.BookData[playerData.CurrentBookIndex];
+
+        if (!bookData.Unlocked && playerData.Money >= bookData.Cost)
+        {
+            playerData.Money -= bookData.Cost;
+            bookData.Unlocked = true;
 
             OnEnter();
         }

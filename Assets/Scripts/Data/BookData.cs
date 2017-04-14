@@ -14,6 +14,9 @@ public class BookData
     private string _name;
 
     [SerializeField]
+    private int _cost;
+
+    [SerializeField]
     private float _baseAcceleration;
 
     [SerializeField]
@@ -30,11 +33,16 @@ public class BookData
     [SerializeField]
     private BookUpgrade _upgrade;
 
+    [SerializeField]
+    private bool _unlocked;
+
     //=======================================================================================
     //
     //=======================================================================================
 
     public string Name { get { return _name; } }
+
+    public int Cost { get { return _cost; } }
 
     public float Acceleration
     {
@@ -79,6 +87,8 @@ public class BookData
 
     public BookUpgrade Upgrade { get { return _upgrade; } private set { _upgrade = value; } }
 
+    public bool Unlocked { get { return _unlocked; } set { _unlocked = value; } }
+
     //=======================================================================================
     //
     //=======================================================================================
@@ -95,6 +105,7 @@ public class BookData
 
             Experience = data.Experience;
             Upgrade = data.Upgrade;
+            Unlocked = data.Unlocked;
         }
     }
 

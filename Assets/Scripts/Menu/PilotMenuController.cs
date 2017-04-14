@@ -46,6 +46,17 @@ public class PilotMenuController : BaseMenu
     [SerializeField]
     private Text _upgradeImprovementText;
 
+    [Header("Buy Panel")]
+
+    [SerializeField]
+    private CanvasGroup _buyCanvasGroup;
+
+    [SerializeField]
+    private Button _buyButton;
+
+    [SerializeField]
+    private Text _buyCostText;
+
     //==================================================================
     //
     //==================================================================
@@ -78,7 +89,10 @@ public class PilotMenuController : BaseMenu
 
         LoadStatBar(playerData, pilotData);
 
-        LoadUpgradePanel(playerData, pilotData);
+        if (pilotData.Unlocked)
+            LoadUpgradePanel(playerData, pilotData);
+        else
+            LoadBuyPanel(playerData, pilotData);
     }
 
     protected override void OnExit()
@@ -86,6 +100,10 @@ public class PilotMenuController : BaseMenu
         _upgradeCanvasGroup.alpha = 0;
         _upgradeCanvasGroup.interactable = false;
         _upgradeCanvasGroup.blocksRaycasts = false;
+
+        _buyCanvasGroup.alpha = 0;
+        _buyCanvasGroup.interactable = false;
+        _buyCanvasGroup.blocksRaycasts = false;
     }
 
     //==================================================================
@@ -104,6 +122,10 @@ public class PilotMenuController : BaseMenu
 
     private void LoadUpgradePanel(PlayerData playerData, PilotData pilotData)
     {
+        _buyCanvasGroup.alpha = 0;
+        _buyCanvasGroup.interactable = false;
+        _buyCanvasGroup.blocksRaycasts = false;
+
         _upgradeCanvasGroup.alpha = 1;
         _upgradeCanvasGroup.interactable = true;
         _upgradeCanvasGroup.blocksRaycasts = true;
@@ -155,6 +177,24 @@ public class PilotMenuController : BaseMenu
         }
     }
 
+    private void LoadBuyPanel(PlayerData player, PilotData pilot)
+    {
+        _upgradeCanvasGroup.alpha = 0;
+        _upgradeCanvasGroup.interactable = false;
+        _upgradeCanvasGroup.blocksRaycasts = false;
+
+        _buyCanvasGroup.alpha = 1;
+        _buyCanvasGroup.interactable = true;
+        _buyCanvasGroup.blocksRaycasts = true;
+
+        _buyCostText.text = "Cost: " + pilot.Cost;
+
+        if (player.Money >= pilot.Cost)
+            _buyButton.interactable = true;
+        else
+            _buyButton.interactable = false;
+    }
+
     //==================================================================
     //
     //==================================================================
@@ -174,8 +214,21 @@ public class PilotMenuController : BaseMenu
         if (pilotData.Experience >= xpPrice)
         {
             pilotData.Experience -= xpPrice;
-
             pilotData.Upgrade.CurrentLevel++;
+
+            OnEnter();
+        }
+    }
+
+    public void OnBuyButtonPressed()
+    {
+        PlayerData playerData = GameController.Instance.PlayerData;
+        PilotData pilotData = GameController.Instance.PilotData[playerData.CurrentPilotIndex];
+
+        if (!pilotData.Unlocked && playerData.Money >= pilotData.Cost)
+        {
+            playerData.Money -= pilotData.Cost;
+            pilotData.Unlocked = true;
 
             OnEnter();
         }

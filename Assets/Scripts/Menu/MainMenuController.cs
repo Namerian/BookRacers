@@ -74,6 +74,7 @@ public class MainMenuController : BaseMenu
 
         UpdatePilotSelection();
         UpdateBookSelection();
+        UpdatePlayButton();
     }
 
     protected override void OnExit()
@@ -98,6 +99,7 @@ public class MainMenuController : BaseMenu
             GameController.Instance.PlayerData.CurrentPilotIndex = index - 1;
 
             UpdatePilotSelection();
+            UpdatePlayButton();
         }
     }
 
@@ -110,6 +112,7 @@ public class MainMenuController : BaseMenu
             GameController.Instance.PlayerData.CurrentPilotIndex = index + 1;
 
             UpdatePilotSelection();
+            UpdatePlayButton();
         }
     }
 
@@ -122,6 +125,7 @@ public class MainMenuController : BaseMenu
             GameController.Instance.PlayerData.CurrentBookIndex = index - 1;
 
             UpdateBookSelection();
+            UpdatePlayButton();
         }
     }
 
@@ -134,6 +138,7 @@ public class MainMenuController : BaseMenu
             GameController.Instance.PlayerData.CurrentBookIndex = index + 1;
 
             UpdateBookSelection();
+            UpdatePlayButton();
         }
     }
 
@@ -156,29 +161,22 @@ public class MainMenuController : BaseMenu
         int index = GameController.Instance.PlayerData.CurrentPilotIndex;
         PilotData pilot = GameController.Instance.PilotData[index];
 
-        if (_pilotNameText.text != pilot.Name)
-        {
-            _pilotNameText.text = pilot.Name;
+        _pilotNameText.text = pilot.Name;
+
+        if (pilot.Unlocked)
             _pilotXpText.text = "XP: " + pilot.Experience;
-        }
+        else
+            _pilotXpText.text = "Cost: " + pilot.Cost;
 
         if (index == 0)
-        {
             _pilotLeftButton.interactable = false;
-        }
         else
-        {
             _pilotLeftButton.interactable = true;
-        }
 
         if (index == GameController.Instance.PilotData.Count - 1)
-        {
             _pilotRightButton.interactable = false;
-        }
         else
-        {
             _pilotRightButton.interactable = true;
-        }
     }
 
     private void UpdateBookSelection()
@@ -186,28 +184,29 @@ public class MainMenuController : BaseMenu
         int index = GameController.Instance.PlayerData.CurrentBookIndex;
         BookData book = GameController.Instance.BookData[index];
 
-        if (_bookNameText.text != book.Name)
-        {
-            _bookNameText.text = book.Name;
+        _bookNameText.text = book.Name;
+
+        if (book.Unlocked)
             _bookXpText.text = "XP: " + book.Experience;
-        }
+        else
+            _bookXpText.text = "Cost: " + book.Cost;
 
         if (index == 0)
-        {
             _bookLeftButton.interactable = false;
-        }
         else
-        {
             _bookLeftButton.interactable = true;
-        }
 
         if (index == GameController.Instance.BookData.Count - 1)
-        {
             _bookRightButton.interactable = false;
-        }
         else
-        {
             _bookRightButton.interactable = true;
-        }
+    }
+
+    private void UpdatePlayButton()
+    {
+        if (GameController.Instance.PilotData[GameController.Instance.PlayerData.CurrentPilotIndex].Unlocked && GameController.Instance.BookData[GameController.Instance.PlayerData.CurrentBookIndex].Unlocked)
+            _playButton.interactable = true;
+        else
+            _playButton.interactable = false;
     }
 }

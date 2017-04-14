@@ -14,6 +14,9 @@ public class PilotData
     private string _name;
 
     [SerializeField]
+    private int _cost;
+
+    [SerializeField]
     private float _baseAcceleration;
 
     [SerializeField]
@@ -30,11 +33,16 @@ public class PilotData
     [SerializeField]
     private PilotUpgrade _upgrade;
 
+    [SerializeField]
+    private bool _unlocked;
+
     //=======================================================================================
     //
     //=======================================================================================
 
     public string Name { get { return _name; } private set { _name = value; } }
+
+    public int Cost { get { return _cost; } }
 
     public float Acceleration
     {
@@ -79,6 +87,8 @@ public class PilotData
 
     public PilotUpgrade Upgrade { get { return _upgrade; } private set { _upgrade = value; } }
 
+    public bool Unlocked { get { return _unlocked; } set { _unlocked = value; } }
+
     //=======================================================================================
     //
     //=======================================================================================
@@ -95,6 +105,7 @@ public class PilotData
 
             Experience = data.Experience;
             Upgrade = data.Upgrade;
+            Unlocked = data.Unlocked;
         }
     }
 
