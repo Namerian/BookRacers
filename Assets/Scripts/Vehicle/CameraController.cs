@@ -37,6 +37,7 @@ public class CameraController : MonoBehaviour
 
     private void OnValidate()
     {
-        FixedUpdate();
+        if (_target != null)
+            FixedUpdate();
     }
 }

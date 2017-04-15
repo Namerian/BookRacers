@@ -37,7 +37,7 @@ public class GameController : MonoBehaviour
 
     public List<LevelData> LevelData { get { return _levelDataList; } }
 
-    
+    public RaceReport LastRaceReport { get; set; }
 
     //===============================================================================
     // MONOBEHAVIOUR METHODS
