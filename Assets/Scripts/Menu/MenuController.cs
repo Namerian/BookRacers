@@ -51,7 +51,10 @@ public class MenuController : MonoBehaviour
             _menuDictionary.Add(menu.MenuType, menu);
         }
 
-        SwitchMenu(EMenuScreen.MainMenu);
+        if (GameController.Instance.LastRaceReport != null)
+            SwitchMenu(EMenuScreen.RaceReportMenu);
+        else
+            SwitchMenu(EMenuScreen.MainMenu);
     }
 
     // Update is called once per frame
@@ -64,7 +67,7 @@ public class MenuController : MonoBehaviour
     {
         if (!Application.isPlaying)
         {
-            foreach(BaseMenu menu in _menuList)
+            foreach (BaseMenu menu in _menuList)
             {
                 if (menu.MenuType == _visibleMenu)
                     menu.ShowMenu();

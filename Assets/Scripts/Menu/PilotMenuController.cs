@@ -104,6 +104,8 @@ public class PilotMenuController : BaseMenu
         _buyCanvasGroup.alpha = 0;
         _buyCanvasGroup.interactable = false;
         _buyCanvasGroup.blocksRaycasts = false;
+
+        GameController.Instance.SaveData();
     }
 
     //==================================================================

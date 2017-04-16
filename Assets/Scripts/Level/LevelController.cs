@@ -8,14 +8,31 @@ public class LevelController : MonoBehaviour
 {
     public static LevelController Instance { get; private set; }
 
+    //===============================================================================
+    //
+    //===============================================================================
+
+    [Header("Object References")]
+
     [SerializeField]
     private MessagePanelController _messagePanel;
 
     [SerializeField]
     private Text _timerText;
 
+    [Header("Variables")]
+
     [SerializeField]
     private int _numTurns = 1;
+
+    [SerializeField]
+    private int _moneyGain = 50;
+
+    [SerializeField]
+    private int _pilotXpGain = 50;
+
+    [SerializeField]
+    private int _bookXpGain = 50;
 
     private int _countDown = 4;
     private int _currentTurn = 0;
@@ -117,7 +134,13 @@ public class LevelController : MonoBehaviour
     private void EndOfRace()
     {
         if (GameController.Instance != null)
-            GameController.Instance.LastRaceReport = new RaceReport(_timer, 50, 50, 50);
+        {
+            GameController.Instance.LastRaceReport = new RaceReport(_timer, _moneyGain, _pilotXpGain, _bookXpGain);
+
+            GameController.Instance.PlayerData.Money += _moneyGain;
+            GameController.Instance.PilotData[GameController.Instance.PlayerData.CurrentPilotIndex].Experience += _pilotXpGain;
+            GameController.Instance.BookData[GameController.Instance.PlayerData.CurrentBookIndex].Experience += _bookXpGain;
+        }
 
         SceneManager.LoadScene("Menu");
     }

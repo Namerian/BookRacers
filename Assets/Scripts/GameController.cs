@@ -74,13 +74,23 @@ public class GameController : MonoBehaviour
 
     }
 
-    private void OnDestroy()
-    {
-        if (Instance == this)
-        {
-            SaveData();
-        }
-    }
+    //private void OnDestroy()
+    //{
+    //    if (Instance == this)
+    //        SaveData();
+    //}
+
+    //private void OnApplicationPause(bool pause)
+    //{
+    //    if (Instance == this)
+    //        SaveData();
+    //}
+
+    //private void OnApplicationQuit()
+    //{
+    //    if (Instance == this)
+    //        SaveData();
+    //}
 
     //===============================================================================
     // METHODS
@@ -108,6 +118,11 @@ public class GameController : MonoBehaviour
 
     public void SaveData()
     {
+        if (!Directory.Exists(DATAPATH))
+        {
+            Directory.CreateDirectory(DATAPATH);
+        }
+
         _playerData.Save();
 
         foreach (PilotData pilot in _pilotDataList)

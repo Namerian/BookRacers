@@ -6,5 +6,6 @@ public enum EMenuScreen
 {
     MainMenu,
     PilotMenu,
-    BookMenu
+    BookMenu,
+    RaceReportMenu
 }

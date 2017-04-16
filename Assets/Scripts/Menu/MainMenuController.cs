@@ -79,6 +79,7 @@ public class MainMenuController : BaseMenu
 
     protected override void OnExit()
     {
+        GameController.Instance.SaveData();
     }
 
     //==================================================================
@@ -87,6 +88,8 @@ public class MainMenuController : BaseMenu
 
     public void OnPlayButtonPressed()
     {
+        OnExit();
+
         SceneManager.LoadScene("Level1");
     }
 
